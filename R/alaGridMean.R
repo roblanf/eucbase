@@ -1,6 +1,6 @@
 #' ALA Layer Means by Species
 #'
-#' Calculates the mean of a layer variable per specified grid size (km^2) of
+#' Calculates the mean of layer variables per specified grid size (km^2) of
 #' compiled species downloaded from ALA.
 #'
 #' @param data ALA dataframe containing point occurrence data and layer values
@@ -23,35 +23,39 @@ alaGridMean <- function (data, km) {
   species <- unique(data$Scientific.Name)
   # Remove unused columns
   #* Test that all downloads share the same format
+  #* Test that all ALA downloads share the same format
+  #* For future addition - look to specify columns to be calculated 
+  #* so function can be appropriated to all point occurrrence data :)
+  # Specify columns of values to be calculated
   nc <- ncol(data)-2
   df <- data[, c(4, 20, 21, 38:nc)]
   # Create blank df for output
-  #* Change to add column per looped variable
-  species_means <- data[NULL, c(4, 38)]
+  species_means <- data[NULL, c(4, 38:nc)]
 
   # Group by species
   for (i in species) {
-    q <- filter(df, Scientific.Name == i)
+    df.spp <- filter(df, Scientific.Name == i)
     # Create Spatial Dataframe and set projection
-    q <- SpatialPointsDataFrame(coords = q[,3:2], data = q,
+    df.spp <- SpatialPointsDataFrame(coords = df.spp[,3:2], data = df.spp,
                                 proj4string = CRS("+init=epsg:4326")
     )
     # Convert projection to coordinate system
-    q <- spTransform(q, CRS("+init=epsg:20353"))
+    df.spp <- spTransform(df.spp, CRS("+init=epsg:20353"))
     # Set raster
-    r <- raster(ext = extent(q@bbox),
+    r <- raster(ext = extent(df.spp@bbox),
                 resolution = km*1000, crs ="+init=epsg:20353")
 
     # Calculate mean
-    rMean <- rasterize(x = q,
+    rMean <- rasterize(x = df.spp,
                        y = r,
-                       field = q$Temperature...annual.range..Bio07., # TO DO: loop for all variables / summarise_all
-                       fun = mean,
-                       na.rm= T)
+                       field = df.spp@data[,4:ncol(df.spp)],
+                         fun = mean,
+                       na.rm = T)
     #* Calculate sd
     # Write SP | Mean | SD
-    out <- data.frame(Name = i, Mean = mean(rMean@data@values, na.rm = T))
-
+    out <- summarise_all(as.data.frame(rMean@data@values), mean, na.rm = T)
+    out <- cbind(i, out)
+    colnames(out) <- colnames(species_means)
     species_means <- rbind(species_means, out)
 
   }
