@@ -19,7 +19,7 @@
 #' @import dplyr
 #'
 
-alaGridMean <- function (data, km, ncol1, ncol2) {
+alaSpeciesMean <- function (data, km, ncol1, ncol2) {
 
   # Create species list
   species <- unique(data$Scientific.Name)
