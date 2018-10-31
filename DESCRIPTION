@@ -1,6 +1,6 @@
 Package: eucbase
 Title: Calculate Species Statistics of ALA Point Occurrence Data and Layers
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: person("Fred", "Jaya", email = "fredjaya1@gmail.com", role = c("aut", "cre"))
 Description: WIP
 Depends: R (>= 3.5.1)
