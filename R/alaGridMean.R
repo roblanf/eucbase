@@ -1,7 +1,7 @@
-#' ALA Layer Means by Species
+#' ALA Layer Means per Grid
 #'
-#' Calculates the species means of layer variables, downloaded from ALA. Means
-#' are calculated as per the specified grid size in km^2. 
+#' Calculates individual cell means of layer variables, downloaded from ALA.
+#' Values are grouped by species.
 #'
 #' @param data ALA dataframe containing point occurrence data and layer values
 #' @param km Numeric. Distance of grid size in km^2 to be sampled
@@ -11,13 +11,13 @@
 #' @export
 #'
 #' @examples
-#' alaGridMean(df, 10, 38, 42)
-#' alaGridMean(data = df, km = 10, ncol1 = 38, ncol2 = 42)
+#' x <- alaGridMean(df, 10, 38, 42)
+#' x <- alaGridMean(data = df, km = 10, ncol1 = 38, ncol2 = 42)
 #'
+#' @import dplyr
 #' @import raster
 #' @import sp
-#' @import dplyr
-#'
+#' 
 
 alaGridMean <- function (data, km, ncol1, ncol2) {
 
@@ -38,7 +38,8 @@ alaGridMean <- function (data, km, ncol1, ncol2) {
     # Convert to coordinate system to enable specification of grid size in km^2
     df.spp <- spTransform(df.spp, CRS("+init=epsg:20353"))
     # Set raster and grid size
-    r <- raster(ext = extent(df.spp@bbox),
+    #* Change extent to aus extent
+    r <- raster(ext = extent(-1730951, 2642161, 5093507, 8912546),
                 resolution = km*1000, crs ="+init=epsg:20353")
 
     # Calculate mean
@@ -49,12 +50,20 @@ alaGridMean <- function (data, km, ncol1, ncol2) {
                        na.rm = T)
     #* Calculate sd
     
-    # Summarise mean across all grids and Write output dataframe
-    out <- summarise_all(as.data.frame(rMean@data@values), mean, na.rm = T)
+    # Export cell ID and coordinates
+    out <- data.frame(1:nrow(rMean@data@values),
+                      xyFromCell(rMean, 1:nrow(rMean@data@values)),
+                      rMean@data@values)
+    # Remove all cells absent of species
+    nlay <- ncol2-ncol1+1
+    out <- out[rowSums(is.na(out))<nlay,]
+    # Write species names 
     out <- cbind(i, out)
-    colnames(out) <- colnames(species_means)
+    # Rename columns
+    colnames(out) <- c("Scientific.Name","cellID", "x", "y", 
+                       colnames(data[, ncol1 : ncol2]))
     species_means <- rbind(species_means, out)
 
   }
-  return(data)
+  return(species_means)
 }

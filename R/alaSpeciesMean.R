@@ -11,12 +11,12 @@
 #' @export
 #'
 #' @examples
-#' alaGridMean(df, 10, 38, 42)
-#' alaGridMean(data = df, km = 10, ncol1 = 38, ncol2 = 42)
-#'
+#' x <- alaSpeciesMean(df, 10, 38, 42)
+#' x <- alaSpeciesMean(data = df, km = 10, ncol1 = 38, ncol2 = 42)
+#' 
+#' @import dplyr
 #' @import raster
 #' @import sp
-#' @import dplyr
 #'
 
 alaSpeciesMean <- function (data, km, ncol1, ncol2) {
@@ -56,5 +56,5 @@ alaSpeciesMean <- function (data, km, ncol1, ncol2) {
     species_means <- rbind(species_means, out)
 
   }
-  return(data)
+  return(species_means)
 }
