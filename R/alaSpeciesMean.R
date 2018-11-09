@@ -38,7 +38,7 @@ alaSpeciesMean <- function (data, km, ncol1, ncol2) {
     # Convert to coordinate system to enable specification of grid size in km^2
     df.spp <- spTransform(df.spp, CRS("+init=epsg:20353"))
     # Set raster and grid size
-    r <- raster(ext = extent(df.spp@bbox),
+    r <- raster(ext = extent(-1731010, 2642161, 5073122, 8912215),
                 resolution = km*1000, crs ="+init=epsg:20353")
 
     # Calculate mean
