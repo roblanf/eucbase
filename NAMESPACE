@@ -2,6 +2,9 @@
 
 export(alaGridMean)
 export(alaSpeciesMean)
+export(plotSpeciesTrait)
 import(dplyr)
 import(raster)
+import(rgeos)
 import(sp)
+import(viridis)

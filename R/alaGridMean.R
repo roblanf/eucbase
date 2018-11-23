@@ -10,9 +10,9 @@
 #'
 #' @export
 #'
-#' @examples
+#' @examples 
+#' df <- read.csv("example_input.csv")
 #' x <- alaGridMean(df, 10, 38, 42)
-#' x <- alaGridMean(data = df, km = 10, ncol1 = 38, ncol2 = 42)
 #'
 #' @import dplyr
 #' @import raster

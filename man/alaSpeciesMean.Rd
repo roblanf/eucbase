@@ -20,7 +20,7 @@ Calculates the species means of layer variables, downloaded from ALA. Means
 are calculated as per the specified grid size in km^2.
 }
 \examples{
+df <- read.csv("example_input.csv")
 x <- alaSpeciesMean(df, 10, 38, 42)
-x <- alaSpeciesMean(data = df, km = 10, ncol1 = 38, ncol2 = 42)
 
 }
