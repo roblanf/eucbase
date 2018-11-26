@@ -11,7 +11,14 @@ Secondly, point data and existing species life history traits are taken to gener
 ## Installation
 
 ```
+# Install dependencies 
 install.packages("devtools")
+install.packages("dplyr")
+install.packages("raster")
+install.packages("rgeos")
+install.packages("viridis")
+
+# Install eucbase
 library(devtools)
 install_github("roblanf/eucbase")
 library(eucbase)
