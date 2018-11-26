@@ -8,7 +8,7 @@
 #' three columns must be ordered by species names, latitudes and longitudes.
 #' @param traits Two column dataframe containing species names and trait means.
 #' @param trait_name Character string specifying the trait name and
-#' corresponding units (if applicable). This will be used as the graph title.
+#' corresponding units (if applicable). This will be incorporated in the graph title.
 #' @param km Numeric. Distance of grid size in km^2 to be sampled.
 #' 
 #' @export
@@ -22,6 +22,7 @@
 #' 
 #' @import raster
 #' @import rgeos
+#' @import rgdal
 #' @import dplyr
 #' @import viridis
 #'

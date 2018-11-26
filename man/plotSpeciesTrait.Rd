@@ -13,7 +13,7 @@ three columns must be ordered by species names, latitudes and longitudes.}
 \item{traits}{Two column dataframe containing species names and trait means.}
 
 \item{trait_name}{Character string specifying the trait name and
-corresponding units (if applicable). This will be used as the graph title.}
+corresponding units (if applicable). This will be incorporated in the graph title.}
 
 \item{km}{Numeric. Distance of grid size in km^2 to be sampled.}
 }

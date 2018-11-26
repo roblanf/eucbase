@@ -1,7 +1,7 @@
 Package: eucbase
 Title: Calculating Species-Level Statistics and Plotting Trait Distributions of
     ALA Point Occurrence Data and Layers
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: person("Fred", "Jaya", email = "fredjaya1@gmail.com", 
     role = c("aut", "cre"))
 Description: Calculates point occurrence data by summarising points to a 
