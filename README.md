@@ -16,6 +16,7 @@ install.packages("devtools")
 install.packages("dplyr")
 install.packages("raster")
 install.packages("rgeos")
+install.packages("rgdal")
 install.packages("viridis")
 
 # Install eucbase
@@ -49,6 +50,6 @@ Please remove unused columns prior to running these functions and refer to the [
 plotSpeciesTrait()
 ```
 
-This function may run slowly on some computers, mainly when masking the raster to the map outline (there are three of these, one for each map).
+To observe the distribution and variance of species traits, three gridded maps are generated of the mean, standard deviation and species richness.
 
-For reference, it took 9-10 minutes to run this function on a low-end Windows 7 machine, using 100km^2 grids. It's expected to run slower as the specified grid size gets smaller.
+This function may run slower on low-end machines caused when masking rasters to the map outlines and take longer as the grid size decreases.
