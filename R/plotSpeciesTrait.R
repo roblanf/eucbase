@@ -16,7 +16,7 @@
 #' @examples
 #' # Plot the distribution of a subset of Eucalyptus species' genome sizes
 #' pts <- read.csv("example_input.csv")
-#' pts <- pts[,c(4,20,21)]
+#' pts <- pts[,1:3]
 #' gs <- read.csv("gs_input.csv")
 #' plotSpeciesTrait(pts, gs, "genome size (pg/2C)", 100)
 #' 
