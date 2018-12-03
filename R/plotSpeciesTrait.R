@@ -23,7 +23,7 @@
 #' @import raster
 #' @import rgeos
 #' @import rgdal
-#' @import dplyr
+#' @importFrom dplyr inner_join 
 #' @import viridis
 #'
 

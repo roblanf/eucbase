@@ -15,7 +15,7 @@
 #' df <- read.csv("example_input.csv")
 #' x <- speciesMean(df, 10)
 #' 
-#' @import dplyr
+#' @importFrom dplyr filter summarise_all
 #' @import raster
 #' @import sp
 #' 

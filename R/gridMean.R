@@ -15,7 +15,7 @@
 #' df <- read.csv("example_input.csv")
 #' x <- gridMean(df, 10)
 #'
-#' @import dplyr
+#' @importFrom dplyr filter
 #' @import raster
 #' @import sp
 #' 
