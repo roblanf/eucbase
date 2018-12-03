@@ -5,7 +5,7 @@ A database of life history traits, occurrence data, and environmental traits for
 # R Package
 The following package calculates point occurrence data by summarising points to a user-specified grid size (km). 
 Currently, two primary uses are available. 
-Firstly, raw species point data downloaded from the Atlas of Living Australia (ALA) act as an input to generate species-level means of environmental factors.
+Firstly, species point occurrence data with corresponding environmental/climatic layers is input to generate species-level means of environmental factors.
 Secondly, point data and existing species life history traits are taken to generate (gridded) spatial distribution plots.
 
 ## Installation
@@ -29,18 +29,19 @@ library(eucbase)
 See the function documentation for usage.
 
 Example input files (and corresponding outputs) are available in /data which are fully reproducible. 
-Functions have been tested using alternate datasets which are not uploaded.
 
-### ALA Point Occurrences and Environmental Layers 
+### Point Occurrences and Environmental Layers 
 
 ``` 
-alaSpeciesMeans()
-alaGridMeans()
+speciesMean()
+gridMean()
 ```
 
-Point occurrence data, named by species, can either be uploaded to or retrived from the ALA database. Climate and substrate layers can be attached upon exporting your point data, which will be used as your raw input file (.csv) for the two functions above.
+Raw point occurrence data, named by species, can either be uploaded to or retrived from the ALA database. Climate and substrate layers can be attached upon exporting your point data, which will be used as your raw input file (.csv) for the two functions above.
 
 It's recommended to use the older (non-beta) version of the [ALA spatial portal](https://spatial.ala.org.au/) due to existing bugs in the beta. [Getting Started](https://support.ala.org.au/support/solutions/articles/6000208463-getting-started) outlines the usage of the spatial portal.
+
+Please remove unused columns prior to running these functions and refer to the [example input file](/data/example_input.csv) for formatting.
 
 ### Plotting Species-Level Trait Distributions
 
