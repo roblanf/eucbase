@@ -10,6 +10,13 @@ Description: Calculates point occurrence data by summarising points to a user-
     environmental factors. Point data and existing species life-history traits 
     are taken to generate (gridded) spatial distribution plots.
 Depends: R (>= 3.3.3)
+Imports:
+    dplyr,
+    sp,
+    raster,
+    rgeos,
+    rgdal,
+    viridis
 License: CC0
 Encoding: UTF-8
 LazyData: true

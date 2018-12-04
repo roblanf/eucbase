@@ -25,11 +25,18 @@ test_that('no missing names or latlongs', {
   expect_identical(test.df$long, na.omit(test.df$long))
 })
 
-test_that('latlong columns are in the correct order', {
+test_that('latlong columns are within correct ranges', {
   expect_lt(max(test.df$lat), 90)
   expect_gt(min(test.df$lat), -90)
   expect_lt(max(test.df$long), 180)
-  expect_gt(min(test.df$lat), -180)
+  expect_gt(min(test.df$long), -180)
+})
+
+test_that('latlong columns are in the correct order', {
+  expect_lt(max(test.df[,2]), 90)
+  expect_gt(min(test.df[,2]), -90)
+  expect_lt(max(test.df[,3]), 180)
+  expect_gt(min(test.df[,3]), -180)
 })
 
 test_that('minimum column length (name, lat, long, >= 1 var)', {
