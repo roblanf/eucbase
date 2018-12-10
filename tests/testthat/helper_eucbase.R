@@ -1,4 +1,3 @@
-
 # Based on the first 20 rows of /data/example_input.csv
 Species <- c('Eucalyptus ebbanoensis', 'Eucalyptus dwyeri', 
              'Eucalyptus oleosa', 'Eucalyptus blakelyi', 'Eucalyptus dwyeri',
@@ -35,10 +34,9 @@ Nitrogen <- c(0.018333, 0.029059, 0.007988, 0.034101, 0.014945, NA, 0.022085,
               0.039873, NA, 0.018122, 0.0155317, 0.027626, 0.055819)
 
 ex.in <- as.data.frame(cbind(Latitude, Longitude, 
-  Precipitation...seasonality..Bio15.,
-  Temperature...annual.range..Bio07., 
-  Potassium, Phosphorous, Nitrogen)
-)
+                             Precipitation...seasonality..Bio15.,
+                             Temperature...annual.range..Bio07., 
+                             Potassium, Phosphorous, Nitrogen))
 
 ex.in <- cbind(Species, ex.in)
 
@@ -47,3 +45,4 @@ rm(Species, Latitude, Longitude,
    Temperature...annual.range..Bio07., 
    Potassium, Phosphorous, Nitrogen)
 
+ex.in.spp <- filter(ex.in, Species == 'Eucalyptus blakelyi')
