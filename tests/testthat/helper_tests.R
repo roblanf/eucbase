@@ -51,4 +51,9 @@ ex.in.n1$Species <- sapply(ex.in.n1$Species, as.character)
 ex.NA <- filter(ex.in, Species == 'Corymbia calophylla')
 ex.NA[, 4:8] <- NA
 ex.NA <- rbind(ex.NA, filter(ex.in, Species != 'Corymbia calophylla'))
+
+# (Extent) Specie occurs at one latlong
+ex.ext <- filter(ex.in, Species == 'Corymbia calophylla')
+ex.ext <- rbind(ex.ext[1,], ex.ext[1,], ex.ext[1,])
+ex.ext <- rbind(ex.ext, filter(ex.in, Species != 'Corymbia calophylla'))
                        

@@ -11,7 +11,7 @@ speciesMean <- function(data, km) {
   e <- setExt(data)
   out1 <- data %>%
     group_by(Species) %>%
-    do(rMSpp(., km))
+    do(rMSpp(., km, e))
   colnames(out1) <- colnames(data[c(1, 4: ncol(data))])
   return(as.data.frame(out1))
 }

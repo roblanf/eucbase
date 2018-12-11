@@ -77,8 +77,8 @@ rMGrid <- function(data, km, e) {
 }
 
 # speciesMean f(x) - summarises all raster means
-rMSpp <- function(data, km) {
-  rasMean <- rasMean(data, km)
+rMSpp <- function(data, km, e) {
+  rasMean <- rasMean(data, km, e)
   out2 <- summarise_all(as.data.frame(rasMean@data@values), mean, na.rm = T)
   return(out2)
 }

@@ -18,6 +18,7 @@ test_that('raster is output', {
 #})
 
 test_that('no output produced when Species n = 1', {
+  # Amend to fail test
   expect_output(sum(ex.ras.outb.n1@data@values), NA)
   expect_output(sum(ex.rasSD.outb.n1@data@values), NA)
 })
