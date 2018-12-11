@@ -16,6 +16,11 @@ test_that('data.frame is output', {
   expect_is(ex.outG2, 'data.frame')
 })
 
+test_that('all species are output', {
+  expect_equal(sort(unique(as.character(ex.in$Species))), sort(unique(as.character(ex.outG$Species))))
+  expect_equal(sort(unique(as.character(ex.in$Species))), sort(unique(as.character(ex.outG2$Species))))
+})
+
 test_that('column classes are correct', {
   expect_is(ex.outG[ , 1], 'character')
   expect_is(sum(ex.outG[2:nrow(ex.outG), 2:ncol(ex.outG)], na.rm = T), 'numeric')

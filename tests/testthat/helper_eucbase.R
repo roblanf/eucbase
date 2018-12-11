@@ -33,16 +33,16 @@ Nitrogen <- c(0.018333, 0.029059, 0.007988, 0.034101, 0.014945, NA, 0.022085,
               0.040862, 0.013395, NA, NA, 0.035341777, 0.034206536, 0.034138,
               0.039873, NA, 0.018122, 0.0155317, 0.027626, 0.055819)
 
+# Good dataframe
 ex.in <- as.data.frame(cbind(Latitude, Longitude, 
                              Precipitation...seasonality..Bio15.,
                              Temperature...annual.range..Bio07., 
                              Potassium, Phosphorous, Nitrogen))
-
 ex.in <- cbind(Species, ex.in)
 
-rm(Species, Latitude, Longitude, 
-   Precipitation...seasonality..Bio15.,
-   Temperature...annual.range..Bio07., 
-   Potassium, Phosphorous, Nitrogen)
-
+# Dataframe with a single spp. (n >1)
 ex.in.spp <- filter(ex.in, Species == 'Eucalyptus blakelyi')
+
+# When grouping by species and species is n = 1, mean cannot be calculated
+ex.in.n1 <- filter(ex.in, Species == 'Eucalyptus ebbanoensis')
+ex.in.n1$Species <- sapply(ex.in.n1$Species, as.character)
