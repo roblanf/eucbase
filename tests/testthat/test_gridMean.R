@@ -3,6 +3,8 @@ context("gridMean")
 ex.outG <- gridMean(ex.in, 100)
 ex.outG2 <- gridMean(ex.in, 43.324975)
 
+ex.NA.outG <- gridMean(ex.NA, 100)
+
 test_that('calling km value with quotes gives error', {
   expect_error(gridMean(ex.in, "100"), "non-numeric argument to binary operator")
 })
@@ -17,8 +19,12 @@ test_that('data.frame is output', {
 })
 
 test_that('all species are output', {
+  # Losing an n=1 specie
   expect_equal(sort(unique(as.character(ex.in$Species))), sort(unique(as.character(ex.outG$Species))))
   expect_equal(sort(unique(as.character(ex.in$Species))), sort(unique(as.character(ex.outG2$Species))))
+  
+  # Losing n=1 and all layer NA species
+  expect_equal(sort(unique(as.character(ex.NA$Species))), sort(unique(as.character(ex.NA.outG$Species))))
 })
 
 test_that('column classes are correct', {

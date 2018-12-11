@@ -1,4 +1,4 @@
-# find min/max latlongs
+# find min/max latlongs for extent
 setExt <- function(data) {
   ext <- extent(min(data[,3]), max(data[,3]),
                 min(data[,2]), max(data[,2]))

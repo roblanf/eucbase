@@ -3,9 +3,15 @@ context("speciesMean")
 ex.outS <- speciesMean(ex.in, 100)
 ex.outS2 <- speciesMean(ex.in, 43.324975)
 
+ex.NA.out <- speciesMean(ex.NA, 100)
+
 # Grid sizes are too small, resulting in all variables for 1 species == NAs
 #ex.outSb <- speciesMean(ex.in, 1)
 #ex.outSb1 <- speciesMean(ex.in, 1)
+
+test_that('all layer fields produce NAs if a single species contains all NA layers', {
+  expect_output(print(sum(ex.NA.out[,-1])), "NaN")
+})
 
 test_that('calling km value with quotes gives error', {
   expect_error(speciesMean(ex.in, "100"), "non-numeric argument to binary operator")
