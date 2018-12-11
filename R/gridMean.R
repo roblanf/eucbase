@@ -2,7 +2,7 @@ library(dplyr)
 library(raster)
 library(sp)
 #df <- read.csv("data/example_input.csv")
-#temp <- filter(df, Species == "Corymbia calophylla")
+#temp <- filter(df, Species == "Eucalyptus dwyeri")
 #data <- temp
 
 gridMean <- function(data, km) {
@@ -12,9 +12,7 @@ gridMean <- function(data, km) {
   e <- setExt(data)
   out1 <- data %>%
     group_by(Species) %>%
-    do(nTest(.)) %>%
+    #do(nTest(.)) %>%
     do(rMGrid(., km, e))
-  colnames(out1)[2] <- "cellID"
-  colnames(out1)[3:ncol(out1)] <- colnames(data)[2:ncol(data)]
   return(as.data.frame(out1))
 }
