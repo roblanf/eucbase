@@ -21,6 +21,9 @@ test_that('data.frame is output', {
   expect_is(ex.NA.outG, 'data.frame')
 })
 
+test_that('Species with all NAs prints output', {
+  expect_output(gridMean(ex.NA, 100), "Corymbia calophylla does not have layer values. Omitting from analysis.")
+})
 test_that('all species are output', {
   # Losing an n=1 specie
   expect_equal(sort(unique(as.character(ex.in$Species))), sort(unique(as.character(ex.outG$Species))))

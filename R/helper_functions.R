@@ -53,8 +53,17 @@ nTest <- function(data) {
   }
 }
 
+# Check for layer NA's
+checkNA <- function(data) {
+  if (sum(is.na(data[,4:ncol(data)])) == (nrow(data) * ncol(data[,4:ncol(data)]))) {
+    print(paste(unique(data$Species), " does not have layer values. Omitting from analysis.", sep = ""))
+  } else {
+  }
+}
+
 # gridMean f(x) - Extracts cellID and coordinates of grids
 rMGrid <- function(data, km, e) {
+  checkNA(data)
   rasMean <- rasMean(data, km, e)
   rasSD   <-   rasSD(data, km, e)
   # Export cell ID and coordinates
