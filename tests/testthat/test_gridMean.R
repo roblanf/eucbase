@@ -3,7 +3,6 @@ context("gridMean")
 ex.outG <- gridMean(ex.in, 100)
 ex.outG2 <- gridMean(ex.in, 43.324975)
 ex.ext.outG <- gridMean(ex.ext, 100)
-
 ex.NA.outG <- gridMean(ex.NA, 100)
 
 test_that('calling km value with quotes gives error', {
@@ -12,6 +11,10 @@ test_that('calling km value with quotes gives error', {
 
 test_that('calling data with quotes gives error', {
   expect_error(gridMean("ex.in", 100), "incorrect number of dimensions")
+})
+
+test_that('error when input file has only one latlong', {
+  expect_error(gridMean(ex.in.n1, 100))
 })
 
 test_that('data.frame is output', {
