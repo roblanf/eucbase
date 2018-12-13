@@ -3,12 +3,12 @@ context("speciesMean")
 ex.outS <- speciesMean(ex.in, 100)
 ex.outS2 <- speciesMean(ex.in, 43.324975)
 ex.ext.out <- speciesMean(ex.ext, 100)
-ex.NA.out <- speciesMean(ex.NA, 100) # Output rows of NA, write test for this
+ex.NA.out <- speciesMean(ex.NA, 100)
+ex.in.n1.out <- speciesMean(ex.in.n1, 100) # testthat no error when input file has only one latlong
 
 # Grid sizes are too small, resulting in all variables for 1 species == NAs
 #ex.outSb <- speciesMean(ex.in, 1)
 #ex.outSb1 <- speciesMean(ex.in, 1)
-
 
 test_that('calling km value with quotes gives error', {
   expect_error(speciesMean(ex.in, "100"), "non-numeric argument to binary operator")
@@ -19,17 +19,25 @@ test_that('calling data with quotes gives error', {
 })
 
 test_that('all layer fields arent output as NaN', {
-  expect_lt(sum(is.na(ex.outS[,-1])), nrow(ex.outS[,-1]) * ncol(ex.outS[,-1]))
-  expect_lt(sum(is.na(ex.outS2[,-1])), nrow(ex.outS2[,-1]) * ncol(ex.outS2[,-1]))
+  expect_lt(sum(is.na(ex.outS   [,-1])), nrow(ex.outS   [,-1]) * ncol(ex.outS   [,-1]))
+  expect_lt(sum(is.na(ex.outS2  [,-1])), nrow(ex.outS2  [,-1]) * ncol(ex.outS2  [,-1]))
   expect_lt(sum(is.na(ex.ext.out[,-1])), nrow(ex.ext.out[,-1]) * ncol(ex.ext.out[,-1]))
-  expect_lt(sum(is.na(ex.NA.out[,-1])), nrow(ex.NA.out[,-1]) * ncol(ex.NA.out[,-1]))
+  expect_lt(sum(is.na(ex.NA.out [,-1])), nrow(ex.NA.out [,-1]) * ncol(ex.NA.out [,-1]))
 })
 
 test_that('data.frame is output', {
-  expect_is(ex.outS, 'data.frame')
-  expect_is(ex.outS2, 'data.frame')
+  expect_is(ex.outS,    'data.frame')
+  expect_is(ex.outS2,   'data.frame')
   expect_is(ex.ext.out, 'data.frame')
-  expect_is(ex.NA.out, 'data.frame')
+  expect_is(ex.NA.out,  'data.frame')
+})
+
+test_that('species with all layer NAs prints output', {
+  expect_output(speciesMean(ex.NA, 100), "Corymbia calophylla does not have layer values. Omitting from analysis.")
+})
+
+test_that('species with all layer NAs is not output', {
+  expect_equal((length(unique(ex.NA$Species)))-1, length(unique(ex.NA.out$Species)))
 })
 
 test_that('one row per species is output', {
@@ -39,25 +47,11 @@ test_that('one row per species is output', {
   expect_equal(length(unique(ex.in$Species)), nrow(ex.outS2))
   expect_equal(length(unique(ex.in$Species)), length(unique(ex.outS2$Species)))
   
+  expect_equal(length(unique(ex.ext$Species)), nrow(ex.ext.out))
   expect_equal(length(unique(ex.ext$Species)), length(unique(ex.ext.out$Species)))
-  expect_equal(length(unique(ex.ext$Species)), length(unique(ex.ext.out$Species)))
   
-  expect_equal(length(unique(ex.NA$Species)), length(unique(ex.NA.out$Species)))
-  expect_equal(length(unique(ex.NA$Species)), length(unique(ex.NA.out$Species)))
-})
-
-test_that('column classes are correct', {
-  expect_is(ex.outS[ , 1], 'character')
-  expect_is(sum(ex.outS[2:nrow(ex.outS), 2:ncol(ex.outS)], na.rm = T), 'numeric')
-  
-  expect_is(ex.outS2[ , 1], 'character')
-  expect_is(sum(ex.outS2[2:nrow(ex.outS2), 2:ncol(ex.outS2)], na.rm = T), 'numeric')
-  
-  expect_is(ex.ext.out[ , 1], 'character')
-  expect_is(sum(ex.ext.out[2:nrow(ex.outS2), 2:ncol(ex.outS2)], na.rm = T), 'numeric')
-  
-  expect_is(ex.NA.out[ , 1], 'character')
-  expect_is(sum(ex.NA.out[2:nrow(ex.NA.out), 2:ncol(ex.NA.out)], na.rm = T), 'numeric')
+  expect_equal(length(unique(ex.NA$Species))-1, nrow(ex.NA.out))
+  expect_equal(length(unique(ex.NA$Species))-1, length(unique(ex.NA.out$Species)))
 })
 
 test_that('one column per variable is output', {

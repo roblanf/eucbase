@@ -12,7 +12,6 @@ gridMean <- function(data, km) {
   e <- setExt(data)
   out1 <- data %>%
     group_by(Species) %>%
-    #do(nTest(.)) %>%
     do(rMGrid(., km, e))
   return(as.data.frame(out1))
 }
