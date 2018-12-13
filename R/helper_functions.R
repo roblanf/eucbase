@@ -1,37 +1,59 @@
+# Set vars
+#rM   <- rasMean@data@values
+#rSD  <- rasSD@data@values
+#4:ncol(data)  <- 4:ncol(data)
+
+### Primary functions (called directly in user-functions) ###
 rMGrid <- function(data, km, e) {
   checkNA(data)
   spdf <- spdf(data)
-  if (nrow(spdf@coords) == 1) {
-    #n1 function
-    print("n1")
-    
-  } else {
+
     # Calculate raster means and sds
     rasMean <- ras(spdf, mean, km, e)
     rasSD   <- ras(spdf, sd,   km, e)
     
-    # Set vars
-    rM   <- rasMean@data@values
-    rSD  <- rasSD@data@values
-    lay  <- 4:ncol(data)
-    
     # Export cell ID and coordinates
-    outM  <- data.frame(1:nrow(rM ), xyFromCell(rasMean, 1:nrow(rM )),  rM)
-    outSD <- data.frame(1:nrow(rSD), xyFromCell(rasSD,   1:nrow(rSD)), rSD)
+    outM  <- data.frame(1:nrow(rasMean@data@values ), xyFromCell(rasMean, 1:nrow(rasMean@data@values )),  rasMean@data@values)
+    outSD <- data.frame(1:nrow(rasSD@data@values), xyFromCell(rasSD,   1:nrow(rasSD@data@values)), rasSD@data@values)
     
     # Rename columns
     colnames(outM )[1]   <- colnames(outSD)[1] <- "cellID"
-    colnames(outM )[lay] <- paste("mean", colnames(data)[lay], sep = "_")
-    colnames(outSD)[lay] <- paste("SD"  , colnames(data)[lay], sep = "_")
+    colnames(outM )[4:ncol(data)] <- paste("mean", colnames(data)[4:ncol(data)], sep = "_")
+    colnames(outSD)[4:ncol(data)] <- paste("SD"  , colnames(data)[4:ncol(data)], sep = "_")
     
     # Join mean and SD
-    out2 <- left_join(outM, outSD[, c(1, lay)], "cellID")
+    out2 <- left_join(outM, outSD[, c(1, 4:ncol(data))], "cellID")
     
     # Remove all cells absent of mean values
-    out2 <- out2[rowSums(is.na(out2)[,lay]) < (max(lay)-3),]
+    out2 <- out2[rowSums(is.na(out2)[,4:ncol(data)]) < (max(4:ncol(data))-3),]
     return(out2)
   }
 
+#if (nrow(spdf@coords) == 1) {
+#  # 
+#  rasN1 <- ras(spdf, mean, km, e) 
+#  
+#  d <- cbind(Species = as.character(data[,1]), cellID = NA, data[,2:ncol(data)])
+#  d[,4:3] <- df.spp@bbox[1:2]
+#  print("n1")
+#  
+#} else {
+
+setExt <- function(data) {
+  ext <- extent((min(data[,3])-2), (max(data[,3])+2),
+                (min(data[,2])-2), (max(data[,2])+2))
+  ext <- as(ext, "SpatialPolygons")
+  proj4string(ext) <- CRS("+init=epsg:4326")
+  ext <- spTransform(ext, CRS("+init=epsg:20353"))
+  return(extent(ext))
+}
+
+### Secondary functions (called in helper (primary) functions) ###
+checkNA <- function(data) { # May be able to change this to ifelse()
+  if (sum(is.na(data[,4:ncol(data)])) == (nrow(data) * ncol(data[,4:ncol(data)]))) {
+    print(paste(unique(data$Species), " does not have layer values. Omitting from analysis.", sep = ""))
+  } else {
+  }
 }
 
 spdf <- function(data) {
@@ -42,11 +64,8 @@ spdf <- function(data) {
 }
 
 ras <- function(spdf, fun, km, e) {
-r <- raster(ext = e, resolution = km*1000, crs ="+init=epsg:20353")
-# Calculate mean
-rMean <- rasterize(x = spdf,
-                   y = r,
-                   field = spdf@data[,4:ncol(spdf)],
-                   fun = fun,
-                   na.rm = T)
+  r   <- raster(ext = e, resolution = km*1000, crs ="+init=epsg:20353")
+  ras <- rasterize(x = spdf, y = r, field = spdf@data[,4:ncol(spdf)],
+                   fun = fun, na.rm = T)
+  return(ras)
 }
