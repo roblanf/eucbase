@@ -33,12 +33,18 @@ Nitrogen <- c(0.018333, 0.029059, 0.007988, 0.034101, 0.014945, NA, 0.022085,
               0.040862, 0.013395, NA, NA, 0.035341777, 0.034206536, 0.034138,
               0.039873, NA, 0.018122, 0.0155317, 0.027626, 0.055819)
 
+## speciesMean and gridMean ##
+
 # Good dataframe
 ex.in <- as.data.frame(cbind(Latitude, Longitude, 
                              Precipitation...seasonality..Bio15.,
                              Temperature...annual.range..Bio07.,
                              Potassium, Phosphorous, Nitrogen))
 ex.in <- cbind(Species, ex.in)
+
+# Incorrect species name
+ex.in.c1 <- ex.in
+colnames(ex.in.c1)[1] <- "Scientific Name" 
 
 # Dataframe with a single spp. (n >1) for testing with help funs
 ex.in.spp <- filter(ex.in, Species == 'Eucalyptus blakelyi')
@@ -56,4 +62,16 @@ ex.NA <- rbind(ex.NA, filter(ex.in, Species != 'Corymbia calophylla'))
 ex.ext <- filter(ex.in, Species == 'Corymbia calophylla')
 ex.ext <- rbind(ex.ext[1,], ex.ext[1,], ex.ext[1,])
 ex.ext <- rbind(ex.ext, filter(ex.in, Species != 'Corymbia calophylla'))
-                       
+
+## plotSpeciesTrait ##
+ex.gs <- data.frame(Species = c('Corymbia calophylla', 'Corymbia eremaea',
+                    'Corymbia ficifolia', 'Eucalyptus amplifolia', 
+                    'Eucalyptus blakelyi', 'Eucalyptus canaliculata',
+                    'Eucalyptus dwyeri', 'Eucalyptus ebbanoensis',
+                    'Eucalyptus oleosa', 'Eucalyptus yalatensis'),
+                    genome_size = c(0.84, 0.885, 0.88, 1.225, 1.21, 1.25,
+                                    1.21, 1.21, 1.2825, 1.32))
+# Virus example #
+
+#ex.v <- data.frame(Species = "Zika virus",
+#                  area = )

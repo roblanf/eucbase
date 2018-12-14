@@ -18,7 +18,6 @@ rMSpp <- function(data, km, e) {
   out2 <- summarise_all(as.data.frame(rasMean@data@values), mean, na.rm = T)
   out2 <- out2[rowSums(is.na(out2)) < ncol(out2),]
   return(out2)
-  
 }
 
 rMGrid <- function(data, km, e) {

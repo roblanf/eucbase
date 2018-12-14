@@ -1,10 +1,9 @@
 context("speciesMean")
 
-ex.outS <- speciesMean(ex.in, 100)
-ex.outS2 <- speciesMean(ex.in, 43.324975)
-ex.ext.out <- speciesMean(ex.ext, 100)
-ex.NA.out <- speciesMean(ex.NA, 100)
-ex.in.n1.out <- speciesMean(ex.in.n1, 100) # testthat no error when input file has only one latlong
+ex.outS      <- speciesMean(ex.in,    100)
+ex.outS2     <- speciesMean(ex.in,    43.324975)
+ex.ext.out   <- speciesMean(ex.ext,   100)
+ex.NA.out    <- speciesMean(ex.NA,    100) # testthat no error when input file has only one latlong
 
 # Grid sizes are too small, resulting in all variables for 1 species == NAs
 #ex.outSb <- speciesMean(ex.in, 1)
@@ -15,7 +14,15 @@ test_that('calling km value with quotes gives error', {
 })
 
 test_that('calling data with quotes gives error', {
-  expect_error(speciesMean("ex.in", 100), "incorrect number of dimensions")
+  expect_error(speciesMean("ex.in", 100), "attempt to set 'colnames' on an object with less than two dimensions")
+})
+
+test_that('no error when input file has only one latlong', {
+  expect_silent(speciesMean(ex.in.n1, 100))
+})
+
+test_that('no error when colnames differ', {
+  expect_silent(speciesMean(ex.in.c1, 100))
 })
 
 test_that('all layer fields arent output as NaN', {

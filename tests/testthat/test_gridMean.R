@@ -1,20 +1,30 @@
 context("gridMean")
 
-ex.outG     <- gridMean(ex.in, 100)
-ex.outG2    <- gridMean(ex.in, 43.324975)
+ex.outG     <- gridMean(ex.in,  100)
+ex.outG2    <- gridMean(ex.in,  43.324975)
 ex.ext.outG <- gridMean(ex.ext, 100)
-ex.NA.outG  <- gridMean(ex.NA, 100)
+ex.NA.outG  <- gridMean(ex.NA,  100)
 
 test_that('calling km value with quotes gives error', {
   expect_error(gridMean(ex.in, "100"), "non-numeric argument to binary operator")
 })
 
 test_that('calling data with quotes gives error', {
-  expect_error(gridMean("ex.in", 100), "incorrect number of dimensions")
+  expect_error(gridMean("ex.in", 100), "attempt to set 'colnames' on an object with less than two dimensions")
+})
+
+test_that('small grid sizes do not produce an error', {
+  expect_silent(gridMean(ex.in, 1))
+  expect_silent(gridMean(ex.in.spp, 1))
+  expect_silent(gridMean(ex.in.spp, 0.5))
 })
 
 test_that('no error when input file has only one latlong', {
   ex.in.n1.out <- gridMean(ex.in.n1, 100)
+})
+
+test_that('no error when colnames differ', {
+  expect_silent(gridMean(ex.in.c1, 100))
 })
 
 test_that('data.frame is output', {

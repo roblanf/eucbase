@@ -1,36 +1,16 @@
-#' Distribution of Species-Level Traits
-#'
-#' Plots the distribution of Australian species-level traits. Three graphs are
-#' generated (trait means, standard deviation and species richness), written as
-#' one .png file. Values are calculated as per the specified grid size in km^2.
-#'
-#' @param points Dataframe containing species point occurrence data. First
-#' three columns must be ordered by species names, latitudes and longitudes.
-#' @param traits Two column dataframe containing species names and trait means.
-#' @param trait_name Character string specifying the trait name and
-#' corresponding units (if applicable). This will be incorporated in the graph title.
-#' @param km Numeric. Distance of grid size in km^2 to be sampled.
-#' 
-#' @export
-#'
-#' @examples
-#' # Plot the distribution of a subset of Eucalyptus species' genome sizes
-#' pts <- read.csv("example_input.csv")
-#' pts <- pts[,1:3]
-#' gs <- read.csv("gs_input.csv")
-#' plotSpeciesTrait(pts, gs, "genome size (pg/2C)", 100)
-#' 
-#' @import raster
-#' @import rgeos
-#' @import rgdal
-#' @importFrom dplyr inner_join 
-#' @import viridis
-#'
+
+library(raster)
+library(rgeos)
+library(rgdal)
+library(dplyr)
+library(viridis)
 
 plotSpeciesTrait <- function(points, traits, trait_name, km) {
   ## Assign species traits values to occurrence points
   # Call occurrence points and species traits
-  # Match species column name  
+  # Match species column name
+  points[,1] <- sapply(points[,1], as.character)
+  traits[,1] <- sapply(traits[,1], as.character)
   colnames(points)[1] <- "Species"
   colnames(traits)[1] <- "Species"
   # Assign traits to each species occurrence
@@ -93,7 +73,7 @@ plotSpeciesTrait <- function(points, traits, trait_name, km) {
   print("Writing plots to plot_species_trait.png...")
   png("plot_species_trait.png",
       width = 1000,
-      height = 800,
+      height = 800
       )
   par(mfrow = c(2, 2))
   plotRas(rMean, rMeanT)
