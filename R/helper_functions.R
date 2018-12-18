@@ -1,52 +1,53 @@
-# Set vars
-#rM   <- rasMean@data@values
-#rSD  <- rasSD@data@values
-#4:ncol(data)  <- 4:ncol(data)
 
 ### Primary functions (called directly in user-functions) ###
 rMSpp <- function(data, km, e) {
   # Check for species with layers that are all NAs
   checkNA(data)
-  
   # Convert to spatial dataframe
   spdf <- spdf(data)
-  
   # Calculate raster means
   rasMean <- ras(spdf, mean, km, e)
-  
   # Summarise values
-  out2 <- summarise_all(as.data.frame(rasMean@data@values), mean, na.rm = T)
-  out2 <- out2[rowSums(is.na(out2)) < ncol(out2),]
+  if(all(is.na(rasMean@data@values))) {
+    print(paste("Error in calculating mean values for ", unique(data$Species), ", please specify a larger grid size!", sep = ""))
+    out2 <- data.frame((matrix(NA, ncol = length(rasMean@data@names))))
+  } else {
+    out2 <- summarise_all(as.data.frame(rasMean@data@values), mean, na.rm = T)
+    out2 <- out2[rowSums(is.na(out2)) < ncol(out2),]
+  }
+  
   return(out2)
 }
 
 rMGrid <- function(data, km, e) {
   # Check for species with layers that are all NAs
-  checkNA(data)
-  
-  # Convert to spatial dataframe
-  spdf <- spdf(data)
-  
-  # Calculate raster means and sds
-  rasMean <- ras(spdf, mean, km, e)
-  rasSD   <- ras(spdf, sd,   km, e)
-  
-  # Export cell ID and coordinates
-  outM  <- data.frame(1:nrow(rasMean@data@values ), xyFromCell(rasMean, 1:nrow(rasMean@data@values )),  rasMean@data@values)
-  outSD <- data.frame(1:nrow(rasSD@data@values), xyFromCell(rasSD,   1:nrow(rasSD@data@values)), rasSD@data@values)
-  
+  if(is.null(checkNA(data))){
+    # Convert to spatial dataframe
+    spdf <- spdf(data)
+    # Calculate raster means and sds
+    rasMean <- ras(spdf, mean, km, e)
+    # Export cell ID and coordinates
+    if(all(is.na(rasMean@data@values))) {
+      print(paste("Error in calculating mean values for ", unique(data$Species), ", please specify a larger grid size!", sep = ""))
+      NAs  <- data.frame((matrix(NA, ncol = length(rasMean@data@names))))
+      outM <- data.frame(1:nrow(xyFromCell(rasMean, 1:nrow(rasMean@data@values ))), xyFromCell(rasMean, 1:nrow(rasMean@data@values )), NAs)
+    } else {
+      outM  <- data.frame(1:nrow(rasMean@data@values ), xyFromCell(rasMean, 1:nrow(rasMean@data@values )), rasMean@data@values)
+    }
+    # Remove all cells absent of mean values
+    if(all(is.na(outM[,4:ncol(outM)]))) {
+    } else {
+      outM <- outM[rowSums(is.na(outM)[,4:ncol(data)]) < (max(4:ncol(data))-3),]
+    }
+    
+  } else {
+    outM  <- data.frame((matrix(NA, ncol = ncol(data))))
+  }
   # Rename columns
-  colnames(outM )[1]   <- colnames(outSD)[1] <- "cellID"
+  colnames(outM )[1:3] <- c("cellID", "x", "y")
   colnames(outM )[4:ncol(data)] <- paste("mean", colnames(data)[4:ncol(data)], sep = "_")
-  colnames(outSD)[4:ncol(data)] <- paste("SD"  , colnames(data)[4:ncol(data)], sep = "_")
   
-  # Join mean and SD
-  out2 <- left_join(outM, outSD[, c(1, 4:ncol(data))], "cellID")
-  
-  # Remove all cells absent of mean values
-  out2 <- out2[rowSums(is.na(out2)[,4:ncol(data)]) < (max(4:ncol(data))-3),]
-  return(out2)
-  
+  return(outM)
 }
 
 setExt <- function(data) {
@@ -61,7 +62,7 @@ setExt <- function(data) {
 ### Secondary functions (called in helper (primary) functions) ###
 checkNA <- function(data) { # May be able to change this to ifelse()
   if (sum(is.na(data[,4:ncol(data)])) == (nrow(data) * ncol(data[,4:ncol(data)]))) {
-    print(paste(unique(data$Species), " does not have layer values. Omitting from analysis.", sep = ""))
+    print(paste(unique(data$Species), " does not have layer values. NAs will be output.", sep = ""))
   } else {
   }
 }

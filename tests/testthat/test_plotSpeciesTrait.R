@@ -1,4 +1,5 @@
 context("plotSpeciesTrait")
+library(eucbase)
 
 file.path <-  paste(getwd(), "/plot_species_trait.png", sep = "")
 #ex.plot.out <- plotSpeciesTrait(ex.in, ex.gs, "genome size (pg/2C)", 100)
@@ -22,5 +23,5 @@ test_that('species columns are characters to prevent warning during joining', {
 })
 
 test_that('.png is printed successfully', {
-  file_test("-f", file.path)
+  expect_true(file_test("-f", file.path))
 })

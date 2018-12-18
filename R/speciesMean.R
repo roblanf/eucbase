@@ -10,7 +10,6 @@ speciesMean <- function(data, km) {
   data[ ,1] <- sapply(data[ ,1], as.character)
   # Calculate gridded/rasterised means, grouped by species
   e <- setExt(data)
-  colnames(data)[1] <- "Species"
   out1 <- data %>%
     group_by(Species) %>%
     do(rMSpp(., km, e))

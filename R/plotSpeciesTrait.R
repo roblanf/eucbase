@@ -6,7 +6,7 @@ library(dplyr)
 library(viridis)
 
 plotSpeciesTrait <- function(points, traits, trait_name, km) {
-  ## Assign species traits values to occurrence points
+  ## Assign species traits values to occurrence points ##
   # Call occurrence points and species traits
   # Match species column name
   points[,1] <- sapply(points[,1], as.character)
@@ -19,7 +19,7 @@ plotSpeciesTrait <- function(points, traits, trait_name, km) {
               n_distinct(df$Species), "/", n_distinct(points$Species), " species.",
                   sep = ""))
   
-  ## Prepare files for mapping
+  ## Prepare files for mapping ##
   # Create spatial dataframe from occurrence points and set lat/long projection
   df.spp <- SpatialPointsDataFrame(coords = df[,3:2], data = df,
                                    proj4string = CRS("+init=epsg:4326"))
@@ -30,7 +30,7 @@ plotSpeciesTrait <- function(points, traits, trait_name, km) {
   projection(aus) <- CRS("+init=epsg:4326")
   # Convert projection to coordinate system (metres) to specify grid size (km)
   df.spp <- spTransform(df.spp, CRS("+init=epsg:20353"))
-  aus <- spTransform(aus, CRS("+init=epsg:20353"))
+  aus    <- spTransform(aus, CRS("+init=epsg:20353"))
   # Create raster and set extents as map boundaries
   print(paste("Generating raster with ", km, "km^2 grids...", sep = ""))
   r <- raster(ext = extent(df.spp@bbox),
