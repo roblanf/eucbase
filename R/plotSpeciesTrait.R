@@ -11,8 +11,7 @@ plotSpeciesTrait <- function(points, traits, trait_name, km) {
   # Match species column name
   points[,1] <- sapply(points[,1], as.character)
   traits[,1] <- sapply(traits[,1], as.character)
-  colnames(points)[1] <- "Species"
-  colnames(traits)[1] <- "Species"
+  colnames(points)[1] <- colnames(traits)[1] <- "Species"
   # Assign traits to each species occurrence
   df <- inner_join(points, traits, by = "Species")
   # How many species retained? (i.e. present in both datasets)
@@ -34,36 +33,33 @@ plotSpeciesTrait <- function(points, traits, trait_name, km) {
   aus <- spTransform(aus, CRS("+init=epsg:20353"))
   # Create raster and set extents as map boundaries
   print(paste("Generating raster with ", km, "km^2 grids...", sep = ""))
-  r <- raster(ext = extent(aus@bbox),
+  r <- raster(ext = extent(df.spp@bbox),
               resolution = km*1000, crs ="+init=epsg:20353")
   
   ## Calculate stats per grid cell, set plot titles and mask raster
   # Mean
   print("Calculating grid means... ")
-  rMean <- rasterize(x = df.spp,
-                     y = r,
+  rMean <- rasterize(x = df.spp, y = r,
                      field = df.spp@data[,ncol(df.spp)],
                      fun = mean)
   rMean  <- mask(rMean, aus)
   rMeanT <- paste("Mean ", trait_name, " per ", km, "km^2 cell", sep ="")
   # SD
   print("Calculating grid standard deviations... ")
-  rSD <- rasterize(x = df.spp,
-                   y = r,
+  rSD <- rasterize(x = df.spp, y = r,
                    field = df.spp@data[,ncol(df.spp)],
                    fun = sd)
   rSD <- mask(rSD, aus)
   rSDT <- paste("Sdev of ", trait_name, " per ", km, "km^2 cell", sep ="")
   # Species richness
   print("Calculating grid species richness... ")
-  rRich <- rasterize(x = df.spp, 
-                     y = r, 
+  rRich <- rasterize(x = df.spp, y = r, 
                      field = df.spp@data$Species, 
                      fun = function(x, ...) {length(unique(na.omit(x)))})
   rRich <- mask(rRich, aus)
   rRichT <-  paste("Species richness per ", km, "km^2 cell", sep ="")
   
-  # Function to prepare plots (masking, plotting, add title and map outline)
+  # Function to prepare plots (plotting, add title and map outline)
   plotRas <- function(ras, rasT) {
     plot(ras, main = rasT, col = viridis(50))
     plot(aus, add = T) 

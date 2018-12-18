@@ -6,6 +6,7 @@ ex.ext.out   <- speciesMean(ex.ext,   100)
 ex.NA.out    <- speciesMean(ex.NA,    100) # testthat no error when input file has only one latlong
 
 # Grid sizes are too small, resulting in all variables for 1 species == NAs
+# Issue 
 #ex.outSb <- speciesMean(ex.in, 1)
 #ex.outSb1 <- speciesMean(ex.in, 1)
 
@@ -22,7 +23,7 @@ test_that('no error when input file has only one latlong', {
 })
 
 test_that('no error when colnames differ', {
-  expect_silent(speciesMean(ex.in.c1, 100))
+  expect_silent(suppressWarnings(speciesMean(ex.in.c1, 100)))
 })
 
 test_that('all layer fields arent output as NaN', {

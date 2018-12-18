@@ -14,17 +14,17 @@ test_that('calling data with quotes gives error', {
 })
 
 test_that('small grid sizes do not produce an error', {
-  expect_silent(gridMean(ex.in, 1))
-  expect_silent(gridMean(ex.in.spp, 1))
-  expect_silent(gridMean(ex.in.spp, 0.5))
+  expect_silent(suppressWarnings(gridMean(ex.in, 1)))
+  expect_silent(suppressWarnings(gridMean(ex.in.spp, 1)))
+  expect_silent(suppressWarnings(gridMean(ex.in.spp, 0.5)))
 })
 
 test_that('no error when input file has only one latlong', {
-  ex.in.n1.out <- gridMean(ex.in.n1, 100)
+  expect_silent(suppressWarnings(gridMean(ex.in.n1, 100)))
 })
 
 test_that('no error when colnames differ', {
-  expect_silent(gridMean(ex.in.c1, 100))
+  expect_silent(suppressWarnings(gridMean(ex.in.c1, 100)))
 })
 
 test_that('data.frame is output', {
