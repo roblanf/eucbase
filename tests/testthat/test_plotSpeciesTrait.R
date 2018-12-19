@@ -1,5 +1,6 @@
 context("plotSpeciesTrait")
-library(eucbase)
+
+skip("too long")
 
 file.path <-  paste(getwd(), "/plot_species_trait.png", sep = "")
 #ex.plot.out <- plotSpeciesTrait(ex.in, ex.gs, "genome size (pg/2C)", 100)

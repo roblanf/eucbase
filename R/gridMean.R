@@ -1,9 +1,25 @@
-library(dplyr)
-library(raster)
-library(sp)
-#df <- read.csv("data/example_input.csv")
-#temp <- filter(data, Species == "Corymbia calophylla")
-#data <- temp
+#' Grid-based means of species point occurrences
+#'
+#' Calculates species grid means of point occurrence-associated variables
+#' (i.e. climate layers) of Australian distributions. Means are calculated 
+#' based on the user-specified grid size (km^2).
+#'
+#' @param data Dataframe of point occurrence data and corresponding variables. 
+#' First three columns must include species names, latitude and longitudes. All 
+#' additional columns will contain the variables
+#' @param km Numeric. Distance of grid size in km^2 to be applied
+#'
+#' @export
+#'
+#' @examples 
+#' data(eucs)
+#' grMean <- gridMean(eucs, 10)
+#'
+#' @importFrom dplyr filter group_by do
+#' @importFrom magrittr %>%
+#' @import raster
+#' @import sp
+#' 
 
 gridMean <- function(data, km) {
   # Change class of species to chr

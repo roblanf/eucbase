@@ -1,4 +1,3 @@
-
 ### Primary functions (called directly in user-functions) ###
 rMSpp <- function(data, km, e) {
   # Check for species with layers that are all NAs
@@ -15,7 +14,7 @@ rMSpp <- function(data, km, e) {
     out2 <- summarise_all(as.data.frame(rasMean@data@values), mean, na.rm = T)
     out2 <- out2[rowSums(is.na(out2)) < ncol(out2),]
   }
-  
+  colnames(out2) <- colnames(data[c(4: ncol(data))])
   return(out2)
 }
 

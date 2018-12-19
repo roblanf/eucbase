@@ -1,5 +1,6 @@
 context("speciesMean")
-library(eucbase)
+
+skip("too long")
 
 ## INPUTS ##
 ex.outS    <- speciesMean(ex.in,  100)
@@ -33,16 +34,11 @@ test_that('species with all layer NAs prints output', {
   expect_output(speciesMean(ex.NA, 100), "Corymbia calophylla does not have layer values. NAs will be output.")
 })
 
-test_that('species with all layer NAs is not output', {
-  expect_equal((length(unique(ex.NA$Species)))-1, length(unique(ex.NA.out$Species)))
-})
-
 test_that('all layer fields arent output as NaN', {
-  expect_false(all(is.na(ex.outG   [,-1])))
+  expect_false(all(is.na(ex.outS    [,-1])))
   expect_false(all(is.na(ex.outS2   [,-1])))
-  expect_false(all(is.na(ex.ext.out   [,-1])))
-  expect_false(all(is.na(ex.NA.out   [,-1])))
-  #expect_false(all(is.na(ex.out.sgS   [,-1]))) #expected due to small grid size error
+  expect_false(all(is.na(ex.ext.out [,-1])))
+  expect_false(all(is.na(ex.NA.out  [,-1])))
 })
 
 ## TESTING OUTPUTS ARE CORRECT ##
@@ -64,8 +60,8 @@ test_that('one row per species is output', {
   expect_equal(length(unique(ex.ext$Species)), nrow(ex.ext.out))
   expect_equal(length(unique(ex.ext$Species)), length(unique(ex.ext.out$Species)))
   
-  expect_equal(length(unique(ex.NA$Species))-1, nrow(ex.NA.out))
-  expect_equal(length(unique(ex.NA$Species))-1, length(unique(ex.NA.out$Species)))
+  expect_equal(length(unique(ex.NA$Species)), nrow(ex.NA.out))
+  expect_equal(length(unique(ex.NA$Species)), length(unique(ex.NA.out$Species)))
 })
 
 test_that('one column per variable is output', {

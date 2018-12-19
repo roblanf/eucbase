@@ -2,7 +2,7 @@
 % Please edit documentation in R/speciesMean.R
 \name{speciesMean}
 \alias{speciesMean}
-\title{Grid-based species means of point occurrences}
+\title{Grid-based means of species point occurrences}
 \usage{
 speciesMean(data, km)
 }
@@ -15,11 +15,11 @@ additional columns will contain the variables}
 }
 \description{
 Calculates species-level means of point occurrence-associated variables
-(i.e. climate layers). Means are calculated based on the user-specified grid
-size (km^2).
+(i.e. climate layers) of Australian distributions. Means are calculated 
+based on the user-specified grid size (km^2).
 }
 \examples{
-df <- read.csv("example_input.csv")
-x <- speciesMean(df, 10)
+data(eucs)
+spMean <- speciesMean(eucs, 10)
 
 }

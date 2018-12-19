@@ -1,9 +1,33 @@
-
-library(raster)
-library(rgeos)
-library(rgdal)
-library(dplyr)
-library(viridis)
+#' Distribution of Species-Level Traits
+#'
+#' Plots the distribution of Australian species-level traits. Three graphs are
+#' generated (trait means, standard deviation and species richness), written as
+#' one .png file. Values are calculated as per the specified grid size in km^2.
+#'
+#' @param points Dataframe containing species point occurrence data. First
+#' three columns must be ordered by species names, latitudes and longitudes.
+#' @param traits Two column dataframe containing species names and trait means.
+#' @param trait_name Character string specifying the trait name and
+#' corresponding units (if applicable). This will be incorporated in the graph title.
+#' @param km Numeric. Distance of grid size in km^2 to be sampled.
+#' 
+#' @export
+#'
+#' @examples
+#' # Plot the distribution of a subset of Eucalyptus species' genome sizes
+#' data(eucs)
+#' data(gs)
+#' plotSpeciesTrait(eucs, gs, "genome size (pg/2C)", 100)
+#' 
+#' @import raster
+#' @import rgeos
+#' @import rgdal
+#' @importFrom dplyr inner_join n_distinct
+#' @importFrom grDevices dev.off png
+#' @importFrom graphics par
+#' @importFrom stats na.omit sd
+#' @import viridis
+#'
 
 plotSpeciesTrait <- function(points, traits, trait_name, km) {
   ## Assign species traits values to occurrence points ##
