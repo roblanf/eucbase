@@ -3,10 +3,11 @@
 A database of life history traits, occurrence data, and environmental traits for eucalypts.
 
 # R Package
-The following package calculates point occurrence data by summarising points to a user-specified grid size (km). 
-Currently, two primary uses are available. 
-Firstly, species point occurrence data with corresponding environmental/climatic layers is input to generate species-level means of environmental factors.
-Secondly, point data and existing species life history traits are taken to generate (gridded) spatial distribution plots.
+The following package takes species point occurrences, with associated environmental layers per point, to output mean values and plot species trait distributions. Aggregating points to a user-specified grid size (km) allows you to output mean values (i.e. environmental variables) for each species, or, each species by grid. By adding species-level life history traits, maps can be generated to visualise the distribution of your trait values.
+
+We recommend using The Atlas of Living Australia's (ALA) [spatial portal](https://spatial.ala.org.au/) to generate your input point occurrence file. More detail below.
+
+Currently, only Australian distributions can be used with the package. 
 
 ## Installation
 
@@ -27,27 +28,37 @@ library(eucbase)
 
 ## Usage and Examples
 
-See the function documentation for usage.
-
-Example input files (and corresponding outputs) are available in /data which are fully reproducible. 
-
-### Point Occurrences and Environmental Layers 
-
+Refer to the function documentation for usage and examples.
 ``` 
-speciesMean()
-gridMean()
+# Functions
+?speciesMean
+?gridMean
+?plotSpeciesTrait
+
+# Example datasets
+data(eucs)
+data(gs)
 ```
 
-Raw point occurrence data, named by species, can either be uploaded to or retrived from the ALA database. Climate and substrate layers can be attached upon exporting your point data, which will be used as your raw input file (.csv) for the two functions above.
+### Input file
 
-It's recommended to use the older (non-beta) version of the [ALA spatial portal](https://spatial.ala.org.au/) due to existing bugs in the beta. [Getting Started](https://support.ala.org.au/support/solutions/articles/6000208463-getting-started) outlines the usage of the spatial portal.
+Raw point occurrence data, named by species, can either be uploaded to or retrived from the ALA database. [Available layers](https://spatial.ala.org.au/layers) can be attached upon exporting your point data, which will be used as your input file (.csv) for the two functions above.
 
-Please remove unused columns prior to running these functions and refer to the [example input file](/data/example_input.csv) for formatting.
+Due to existing bugs in the beta version, we recommended using the older (non-beta) version of the [ALA spatial portal](https://spatial.ala.org.au/). [Getting Started](https://support.ala.org.au/support/solutions/articles/6000208463-getting-started) outlines the usage of the spatial portal.
 
-### Plotting Species-Level Trait Distributions
+Please remove unused columns prior to running the functions and refer to `data(eucs)` for formatting. The neccessary columns to retain include the Scientific Name, Latitude, Longitude, and all layers onwards, in that order.
+
+### Calculating grid-based species means of environmental traits
+``` 
+speciesMean() # Outputs mean values for all species
+gridMean()    # Outputs gridded mean values for all species
+```
+Depending on the size of your input file, we suggest avoiding using a grid-size < 1km.
+
+### Plotting species-level trait distributions
 
 ```
-plotSpeciesTrait()
+plotSpeciesTrait() # Generates maps for the mean, sd and spp. richness of your trait
 ```
 
 To observe the distribution and variance of species traits, three gridded maps are generated of the mean, standard deviation and species richness.

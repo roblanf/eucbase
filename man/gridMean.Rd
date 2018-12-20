@@ -2,7 +2,7 @@
 % Please edit documentation in R/gridMean.R
 \name{gridMean}
 \alias{gridMean}
-\title{Grid-based means of point occurrences}
+\title{Grid-based means of species point occurrences}
 \usage{
 gridMean(data, km)
 }
@@ -15,11 +15,11 @@ additional columns will contain the variables}
 }
 \description{
 Calculates species grid means of point occurrence-associated variables
-(i.e. climate layers). Means are calculated based on the user-specified grid
-size (km^2).
+(i.e. climate layers) of Australian distributions. Means are calculated 
+based on the user-specified grid size (km^2).
 }
 \examples{
-df <- read.csv("example_input.csv")
-x <- gridMean(df, 10)
+data(eucs)
+grMean <- gridMean(eucs, 10)
 
 }
